@@ -54,6 +54,7 @@ Visit http://localhost:5000 and sign in with Google.
 ## Production Deploy
 
 ```bash
+uv run python checks.py     # Sanity check before deploy
 docker compose up --build
 ```
 
