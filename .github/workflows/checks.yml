@@ -1,0 +1,46 @@
+name: Checks
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run checks
+        env:
+          SQLALCHEMY_DATABASE_URI: postgresql://test:test@localhost:5432/test
+          SECRET_KEY: test-secret-key-for-ci
+          SECURITY_PASSWORD_SALT: test-salt-for-ci
+          SECURITY_TOTP_SECRETS: test-totp-secret
+        run: uv run python checks.py -v
