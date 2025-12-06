@@ -682,7 +682,7 @@ requires-dist = [
     { name = "flask-script", specifier = ">=2.0.6" },
     { name = "flask-security-too", specifier = ">=5.6.2" },
     { name = "flask-session", specifier = ">=0.8.0" },
-    { name = "flask-shell-ipython", marker = "extra == 'dev'", specifier = ">=0.5.0" },
+    { name = "flask-shell-ipython", marker = "extra == 'dev'", specifier = ">=0.5.3" },
     { name = "flask-sqlalchemy", specifier = ">=3.1.1" },
     { name = "flask-wtf", specifier = ">=1.2.2" },
     { name = "itsdangerous", specifier = ">=2.2.0" },

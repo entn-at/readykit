@@ -76,14 +76,10 @@ dev = [
     # Code formatting and linting
     "ruff",
     "pre-commit",
-    
+
     # Development tools
     "flask-debugtoolbar>=0.16.0",
-    "flask-shell-ipython>=0.5.0",
-    
-    # Testing (if needed)
-    # "pytest>=7.0.0",
-    # "pytest-flask>=1.2.0",
+    "flask-shell-ipython>=0.5.3",
 ]
 wsgi = [
     "uwsgi>=2.0.30",
