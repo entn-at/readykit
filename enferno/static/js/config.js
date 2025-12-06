@@ -1,8 +1,7 @@
 /**
- * Enferno Framework - Central Configuration
- * Coinbase-inspired color palette
+ * ReadyKit - Central Configuration
+ * Purple gradient color palette
  */
-
 
 const config = {
     // Common Vue settings
@@ -23,6 +22,9 @@ const config = {
             VCombobox: {
                 variant: 'outlined'
             },
+            VAutocomplete: {
+                variant: 'outlined'
+            },
             VChip: {
                 size: 'small'
             },
@@ -34,8 +36,8 @@ const config = {
                 size: 'small'
             },
             VDataTableServer: {
-                itemsPerPage: 25 ,
-                itemsPerPageOptions: [ 25, 50, 100]
+                itemsPerPage: 25,
+                itemsPerPageOptions: [25, 50, 100]
             }
         },
         theme: {
@@ -44,9 +46,9 @@ const config = {
                 light: {
                     dark: false,
                     colors: {
-                        // Modern gradient-ready colors
-                        primary: '#667eea',      // Purple-blue (matches gradient start)
-                        secondary: '#764ba2',    // Purple (matches gradient end)
+                        // Purple gradient theme
+                        primary: '#667eea',      // Purple-blue
+                        secondary: '#764ba2',    // Purple
                         accent: '#06B6D4',       // Cyan
                         error: '#EF4444',        // Red
                         info: '#3B82F6',         // Blue
@@ -59,26 +61,26 @@ const config = {
                 dark: {
                     dark: true,
                     colors: {
-                        // Next.js inspired dark palette with gradient support
-                        primary: '#667eea',      // Purple-blue base color (gradient applied via CSS)
+                        // Dark purple palette
+                        primary: '#818CF8',      // Lighter purple for dark mode
                         secondary: '#8B5CF6',    // Purple
                         accent: '#06B6D4',       // Cyan
                         error: '#EF4444',        // Red
                         info: '#3B82F6',         // Blue
                         success: '#10B981',      // Emerald
                         warning: '#F59E0B',      // Amber
-                        background: '#0F0F0F',   // Almost black
-                        surface: '#1A1A1A',      // Dark surface
-                        'surface-variant': '#262626',  // Slightly lighter surface
-                        'on-background': '#FAFAFA',    // Light text on dark background
-                        'on-surface': '#E5E5E5',       // Light text on surface
-                        'on-primary': '#FFFFFF',       // White text on primary
+                        background: '#0F172A',   // Slate 900
+                        surface: '#1E293B',      // Slate 800
+                        'surface-variant': '#334155',  // Slate 700
+                        'on-background': '#F8FAFC',
+                        'on-surface': '#E2E8F0',
+                        'on-primary': '#FFFFFF',
                     }
                 }
             }
         },
         icons: {
-            defaultSet: 'mdi'
+            defaultSet: 'mdi'  // Keep MDI as default, Tabler via ti- prefix
         }
     }
 };

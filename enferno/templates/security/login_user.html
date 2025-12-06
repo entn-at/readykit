@@ -65,22 +65,16 @@
                                 <v-text-field
                                     label="Email"
                                     name="email"
-                                    prepend-inner-icon="mdi-email"
                                     type="email"
-                                    variant="outlined"
-                                    class="mb-2"
-                                    bg-color="grey-lighten-4"
+                                    required
                                 ></v-text-field>
 
                                 <v-text-field
                                     id="password"
                                     label="Password"
                                     name="password"
-                                    prepend-inner-icon="mdi-lock"
                                     type="password"
-                                    variant="outlined"
-                                    class="mb-2"
-                                    bg-color="grey-lighten-4"
+                                    required
                                 ></v-text-field>
                                 
                                 {% if login_user_form.email.errors or login_user_form.password.errors %}
@@ -104,12 +98,13 @@
                                 </v-btn>
                             </v-form>
                             
+                            {% if config.GOOGLE_AUTH_ENABLED or config.GITHUB_AUTH_ENABLED %}
                             <div class="d-flex align-center my-4">
                                 <v-divider></v-divider>
-                                <span class="mx-3 text-medium-emphasis text-caption">or </span>
+                                <span class="mx-3 text-medium-emphasis text-caption">or</span>
                                 <v-divider></v-divider>
                             </div>
-                            
+
                             <!-- Social Login Buttons -->
                             <div class="d-flex flex-column gap-3 mb-4">
                                 {% if config.GOOGLE_AUTH_ENABLED %}
@@ -151,6 +146,7 @@
                                 </v-btn>
                                 {% endif %}
                             </div>
+                            {% endif %}
 
                             <!-- Flash Messages Alert -->
                             <v-alert

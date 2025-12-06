@@ -52,6 +52,9 @@
                         </v-card-title>
                         
                         <v-card-text>
+                            {% set has_social_auth = config.GOOGLE_AUTH_ENABLED or config.GITHUB_AUTH_ENABLED %}
+
+                            {% if has_social_auth %}
                             <!-- Social Login Buttons -->
                             <div class="d-flex flex-column gap-3 mb-4">
                                 {% if config.GOOGLE_AUTH_ENABLED %}
@@ -99,87 +102,73 @@
                                     <v-divider></v-divider>
                                 </div>
                                 
-                                <v-btn 
-                                    variant="text" 
-                                    block 
-                                    class="border rounded"
-                                    color="default"
+                                <v-btn
+                                    variant="outlined"
+                                    block
                                     height="48"
                                     @click="showEmailForm = true"
                                     v-if="!showEmailForm"
                                 >
                                     <template v-slot:prepend>
-                                        <v-icon class="mr-2">mdi-email</v-icon>
+                                        <i class="ti ti-mail mr-2" style="font-size: 20px;"></i>
                                     </template>
                                     Continue with Email
                                 </v-btn>
                             </div>
-                            
+                            {% endif %}
+
                             <!-- Email/Password Form -->
-                            <v-form 
-                                action="{{ url_for_security('register') }}" 
-                                method="post" 
-                                id="registerForm" 
+                            <v-form
+                                action="{{ url_for_security('register') }}"
+                                method="post"
+                                id="registerForm"
                                 ref="form"
-                                v-if="showEmailForm"
+                                v-if="showEmailForm || !hasSocialAuth"
                             >
                                 {{ register_user_form.hidden_tag() }}
-                                
-                                <v-text-field
-                                    density="compact"
-                                    label="First Name"
-                                    name="first_name"
-                                    prepend-inner-icon="mdi-account"
-                                    type="text"
-                                    variant="outlined"
-                                    
-                                    required
-                                ></v-text-field>
+
+                                <v-row class="mb-6">
+                                    <v-col cols="6" class="py-0">
+                                        <v-text-field
+                                            label="First Name"
+                                            name="first_name"
+                                            type="text"
+                                            hide-details
+                                            required
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="6" class="py-0">
+                                        <v-text-field
+                                            label="Last Name"
+                                            name="last_name"
+                                            type="text"
+                                            hide-details
+                                            required
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
 
                                 <v-text-field
-                                    density="compact"
-                                    label="Last Name"
-                                    name="last_name"
-                                    prepend-inner-icon="mdi-account"
-                                    type="text"
-                                    variant="outlined"
-                                    
-                                    required
-                                ></v-text-field>
-
-                                <v-text-field
-                                    density="compact"
                                     label="Email"
                                     name="email"
-                                    prepend-inner-icon="mdi-email"
                                     type="email"
-                                    variant="outlined"
-                                    
                                     required
                                 ></v-text-field>
 
                                 <v-text-field
-                                    density="compact"
                                     id="password"
                                     label="Password"
                                     name="password"
-                                    prepend-inner-icon="mdi-lock"
                                     type="password"
-                                    variant="outlined"
-                                    
                                     required
                                 ></v-text-field>
-                                
+
                                 {% if register_user_form.password_confirm %}
                                 <v-text-field
-                                    density="compact"
                                     id="confirm-password"
                                     label="Confirm Password"
                                     name="password_confirm"
-                                    prepend-inner-icon="mdi-lock-check"
                                     type="password"
-                                    variant="outlined"
-                                    
                                     required
                                 ></v-text-field>
                                 {% endif %}
@@ -262,7 +251,8 @@
                     errors: '',
                     snackBar: false,
                     snackMessage: '',
-                    showEmailForm: false
+                    showEmailForm: false,
+                    hasSocialAuth: {% if config.GOOGLE_AUTH_ENABLED or config.GITHUB_AUTH_ENABLED %}true{% else %}false{% endif %}
                 };
             },
             methods: {

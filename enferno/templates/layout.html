@@ -11,6 +11,8 @@
 
     <link rel="stylesheet" href="/static/css/vuetify.min.css">
     <link rel="stylesheet" href="/static/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link rel="stylesheet" href="/static/css/layout.css">
     <link rel="stylesheet" href="/static/css/app.css">
 
     {% block css %}{% endblock %}
@@ -19,19 +21,21 @@
 <body class="{% block body_class %} {% endblock %}">
 <v-app id="app">
     <v-layout class="rounded rounded-md">
-        <v-app-bar color="primary">
+        <v-app-bar color="surface" density="comfortable" elevation="1">
+            <v-app-bar-nav-icon @click="drawer = !drawer" class="d-md-none"></v-app-bar-nav-icon>
 
             <v-app-bar-title>
-                <a href="/" class="text-decoration-none text-white">
+                <a href="/" class="text-decoration-none d-flex align-center">
                     <span class="text-h5 font-weight-bold">ReadyKit</span>
                 </a>
             </v-app-bar-title>
             <v-spacer></v-spacer>
-            {% if current_user.is_authenticated %}
-<!-- User menu moved to sidebar -->
 
+            <theme-switcher></theme-switcher>
 
-            {% endif  %}
+            {% if not current_user.is_authenticated %}
+            <v-btn href="/login" variant="text" class="ml-2">Sign in</v-btn>
+            {% endif %}
         </v-app-bar>
 
         <v-navigation-drawer v-model="drawer">
@@ -40,24 +44,27 @@
                     <!-- Super Admin Navigation -->
                     {% if current_user.is_superadmin %}
                         <v-list-subheader>Platform Management</v-list-subheader>
-                        <v-list-item 
-                            href="/dashboard" 
-                            prepend-icon="mdi-view-dashboard"
+                        <v-list-item
+                            href="/dashboard"
                             title="Platform Overview"
-                        ></v-list-item>
-                        
+                        >
+                            <template v-slot:prepend><i class="ti ti-dashboard mr-4"></i></template>
+                        </v-list-item>
+
                         <v-divider class="my-2"></v-divider>
                         <v-list-subheader>System Administration</v-list-subheader>
-                        <v-list-item 
-                            href="/users/" 
-                            prepend-icon="mdi-account-group"
+                        <v-list-item
+                            href="/users/"
                             title="Manage Users"
-                        ></v-list-item>
-                        <v-list-item 
-                            href="/activities/" 
-                            prepend-icon="mdi-history"
+                        >
+                            <template v-slot:prepend><i class="ti ti-users mr-4"></i></template>
+                        </v-list-item>
+                        <v-list-item
+                            href="/activities/"
                             title="Activity Log"
-                        ></v-list-item>
+                        >
+                            <template v-slot:prepend><i class="ti ti-history mr-4"></i></template>
+                        </v-list-item>
                         
                         <!-- Current Workspace Context (if in workspace) -->
                         {% set current_workspace = get_current_workspace() %}
@@ -69,26 +76,30 @@
                                 <v-chip size="x-small" color="success" variant="flat" class="ml-2">Pro</v-chip>
                                 {% endif %}
                             </v-list-subheader>
-                            <v-list-item 
-                                href="/workspace/{{ current_workspace.id }}/" 
-                                prepend-icon="mdi-briefcase"
+                            <v-list-item
+                                href="/workspace/{{ current_workspace.id }}/"
                                 title="Workspace Home"
-                            ></v-list-item>
-                            <v-list-item 
-                                href="/workspace/{{ current_workspace.id }}/team/" 
-                                prepend-icon="mdi-account-group"
+                            >
+                                <template v-slot:prepend><i class="ti ti-briefcase mr-4"></i></template>
+                            </v-list-item>
+                            <v-list-item
+                                href="/workspace/{{ current_workspace.id }}/team/"
                                 title="Manage Team"
-                            ></v-list-item>
-                            <v-list-item 
-                                href="/workspace/{{ current_workspace.id }}/settings/" 
-                                prepend-icon="mdi-cog"
+                            >
+                                <template v-slot:prepend><i class="ti ti-users mr-4"></i></template>
+                            </v-list-item>
+                            <v-list-item
+                                href="/workspace/{{ current_workspace.id }}/settings/"
                                 title="Settings"
-                            ></v-list-item>
-                            <v-list-item 
-                                href="/dashboard" 
-                                prepend-icon="mdi-swap-horizontal"
+                            >
+                                <template v-slot:prepend><i class="ti ti-settings mr-4"></i></template>
+                            </v-list-item>
+                            <v-list-item
+                                href="/dashboard"
                                 title="Switch Workspace"
-                            ></v-list-item>
+                            >
+                                <template v-slot:prepend><i class="ti ti-switch-horizontal mr-4"></i></template>
+                            </v-list-item>
                         {% endif %}
                         
                     {% else %}
@@ -102,55 +113,65 @@
                                 <v-chip size="x-small" color="success" variant="flat" class="ml-2">Pro</v-chip>
                                 {% endif %}
                             </v-list-subheader>
-                            <v-list-item 
-                                href="/workspace/{{ current_workspace.id }}/" 
-                                prepend-icon="mdi-briefcase"
+                            <v-list-item
+                                href="/workspace/{{ current_workspace.id }}/"
                                 title="Workspace Home"
-                            ></v-list-item>
-                            
+                            >
+                                <template v-slot:prepend><i class="ti ti-briefcase mr-4"></i></template>
+                            </v-list-item>
+
                             <!-- Show team management if user is workspace admin -->
                             {% if current_user.get_workspace_role(current_workspace.id) == 'admin' %}
                                 <v-list-item
                                     href="/workspace/{{ current_workspace.id }}/team/"
-                                    prepend-icon="mdi-account-group"
                                     title="Manage Team"
-                                ></v-list-item>
+                                >
+                                    <template v-slot:prepend><i class="ti ti-users mr-4"></i></template>
+                                </v-list-item>
                             {% endif %}
-                            
+
                             <!-- Settings -->
-                            <v-list-item 
-                                href="/workspace/{{ current_workspace.id }}/settings/" 
-                                prepend-icon="mdi-cog"
+                            <v-list-item
+                                href="/workspace/{{ current_workspace.id }}/settings/"
                                 title="Settings"
-                            ></v-list-item>
-                            
+                            >
+                                <template v-slot:prepend><i class="ti ti-settings mr-4"></i></template>
+                            </v-list-item>
+
                             <!-- Show workspace switcher if user has multiple workspaces -->
                             {% if current_user.get_workspaces()|length > 1 %}
-                                <v-list-item 
-                                    href="/dashboard" 
-                                    prepend-icon="mdi-swap-horizontal"
+                                <v-list-item
+                                    href="/dashboard"
                                     title="Switch Workspace"
-                                ></v-list-item>
+                                >
+                                    <template v-slot:prepend><i class="ti ti-switch-horizontal mr-4"></i></template>
+                                </v-list-item>
                             {% endif %}
                         {% else %}
                             <!-- User has no workspace access -->
                             <v-list-subheader>Getting Started</v-list-subheader>
-                            <v-list-item 
-                                href="/dashboard" 
-                                prepend-icon="mdi-view-dashboard"
+                            <v-list-item
+                                href="/dashboard"
                                 title="Dashboard"
-                            ></v-list-item>
-                            <v-list-item 
-                                prepend-icon="mdi-help-circle"
+                            >
+                                <template v-slot:prepend><i class="ti ti-dashboard mr-4"></i></template>
+                            </v-list-item>
+                            <v-list-item
                                 title="Contact Admin"
                                 subtitle="Request workspace access"
-                            ></v-list-item>
+                            >
+                                <template v-slot:prepend><i class="ti ti-help mr-4"></i></template>
+                            </v-list-item>
                         {% endif %}
                     {% endif %}
                 {% else %}
                     <!-- Unauthenticated Navigation -->
-                    <v-list-item href="/login" prepend-icon="mdi-login" title="Login"></v-list-item>
-                    <v-list-item href="/register" prepend-icon="mdi-account-plus" title="Sign Up"></v-list-item>
+                    <v-list-item href="/login" title="Login">
+                        <template v-slot:prepend><i class="ti ti-login mr-4"></i></template>
+                    </v-list-item>
+                    <v-list-item href="/register" title="Sign Up">
+                        <template v-slot:prepend><i class="ti ti-user-plus mr-4"></i></template>
+                    </v-list-item>
                 {% endif %}
             </v-list>
             
@@ -173,7 +194,7 @@
                             <div class="text-caption text-medium-emphasis">
                                 {% if current_user.is_superadmin %}
                                     <v-chip size="x-small" color="primary" variant="tonal" class="px-2">
-                                        <v-icon start size="12">mdi-shield-crown</v-icon>
+                                        <i class="ti ti-shield-check mr-1" style="font-size: 12px;"></i>
                                         Admin
                                     </v-chip>
                                 {% else %}
@@ -181,16 +202,15 @@
                                 {% endif %}
                             </div>
                         </div>
-                        
-                        <v-btn 
-                            href="/logout" 
-                            icon="mdi-logout" 
-                            variant="text" 
+
+                        <v-btn
+                            href="/logout"
+                            variant="text"
                             size="small"
                             color="medium-emphasis"
                             class="ml-auto"
                         >
-                            <v-icon size="18">mdi-logout</v-icon>
+                            <i class="ti ti-logout" style="font-size: 18px;"></i>
                             <v-tooltip activator="parent" location="top">Logout</v-tooltip>
                         </v-btn>
                     </v-card>
@@ -247,6 +267,34 @@
 <script src="/static/js/config.js"></script>
 <script src="/static/js/vuetify.min.js"></script>
 <script src="/static/js/axios.min.js"></script>
+
+<!-- Enferno Components -->
+<script src="/static/js/components/ThemeSwitcher.js"></script>
+<script src="/static/js/components/index.js"></script>
+
+<script>
+    // Base layout mixin for all pages
+    const layoutMixin = {
+        data() {
+            return {
+                drawer: true,
+                isMobile: window.innerWidth < 960
+            };
+        },
+        methods: {
+            handleResize() {
+                this.isMobile = window.innerWidth < 960;
+            }
+        },
+        mounted() {
+            window.addEventListener('resize', this.handleResize);
+        },
+        beforeUnmount() {
+            window.removeEventListener('resize', this.handleResize);
+        }
+    };
+</script>
+
 {% block js %}{% endblock %}
 </body>
 </html>
