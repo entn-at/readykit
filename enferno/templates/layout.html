@@ -19,7 +19,7 @@
 </head>
 
 <body class="{% block body_class %} {% endblock %}">
-<v-app id="app">
+<v-app id="app" v-cloak>
     <v-layout class="rounded rounded-md">
         <v-app-bar color="surface" density="comfortable" elevation="1">
             <v-app-bar-nav-icon @click="drawer = !drawer" class="d-md-none"></v-app-bar-nav-icon>
