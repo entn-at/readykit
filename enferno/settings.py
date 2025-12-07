@@ -1,12 +1,26 @@
+import importlib.util
 import os
 from datetime import timedelta
 
 import bleach
-import redis
 from dotenv import load_dotenv
+
+# Detect optional dependencies (installed via --extra full)
+REDIS_AVAILABLE = importlib.util.find_spec("redis") is not None
 
 os_env = os.environ
 load_dotenv()
+
+# Session configuration - computed at module level
+_redis_url = os.environ.get("REDIS_URL") or os.environ.get("REDIS_SESSION")
+if REDIS_AVAILABLE and _redis_url:
+    import redis  # type: ignore[import-not-found]
+
+    _SESSION_TYPE = "redis"
+    _SESSION_REDIS = redis.from_url(_redis_url)
+else:
+    _SESSION_TYPE = "sqlalchemy"
+    _SESSION_REDIS = None
 
 
 def uia_username_mapper(identity):
@@ -28,9 +42,10 @@ class Config:
     # SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI', 'postgresql:///enferno')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
-    CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/2")
-    CELERY_RESULT_BACKEND = os.environ.get(
-        "CELERY_RESULT_BACKEND", "redis://localhost:6379/3"
+    # Celery configuration - only set if Redis available and configured
+    CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL") if REDIS_AVAILABLE else None
+    CELERY_RESULT_BACKEND = (
+        os.environ.get("CELERY_RESULT_BACKEND") if REDIS_AVAILABLE else None
     )
 
     # security
@@ -83,11 +98,10 @@ class Config:
 
     SESSION_PROTECTION = "strong"
 
-    # Session configuration
-    SESSION_TYPE = "redis"
-    SESSION_REDIS = redis.from_url(
-        os.environ.get("REDIS_SESSION", "redis://localhost:6379/1")
-    )
+    # Session configuration - uses module-level computed values
+    SESSION_TYPE = _SESSION_TYPE
+    SESSION_REDIS = _SESSION_REDIS
+    SESSION_SQLALCHEMY_TABLE = "sessions"
     SESSION_KEY_PREFIX = "session:"
     SESSION_USE_SIGNER = True
     PERMANENT_SESSION_LIFETIME = 3600
