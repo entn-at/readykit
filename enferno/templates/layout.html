@@ -101,7 +101,29 @@
                                 <template v-slot:prepend><i class="ti ti-switch-horizontal mr-4"></i></template>
                             </v-list-item>
                         {% endif %}
-                        
+
+                        <!-- Account Section for Super Admin -->
+                        <v-divider class="my-2"></v-divider>
+                        <v-list-subheader>Account</v-list-subheader>
+                        <v-list-item
+                            href="/change"
+                            title="Change Password"
+                        >
+                            <template v-slot:prepend><i class="ti ti-key mr-4"></i></template>
+                        </v-list-item>
+                        <v-list-item
+                            href="/tf-setup"
+                            title="Two-Factor Auth"
+                        >
+                            <template v-slot:prepend><i class="ti ti-shield-lock mr-4"></i></template>
+                        </v-list-item>
+                        <v-list-item
+                            href="/mf-recovery-codes"
+                            title="Recovery Codes"
+                        >
+                            <template v-slot:prepend><i class="ti ti-lifebuoy mr-4"></i></template>
+                        </v-list-item>
+
                     {% else %}
                         <!-- Regular User Navigation -->
                         {% set current_workspace = get_current_workspace() %}
@@ -147,6 +169,28 @@
                                     <template v-slot:prepend><i class="ti ti-switch-horizontal mr-4"></i></template>
                                 </v-list-item>
                             {% endif %}
+
+                            <!-- Account Section -->
+                            <v-divider class="my-2"></v-divider>
+                            <v-list-subheader>Account</v-list-subheader>
+                            <v-list-item
+                                href="/change"
+                                title="Change Password"
+                            >
+                                <template v-slot:prepend><i class="ti ti-key mr-4"></i></template>
+                            </v-list-item>
+                            <v-list-item
+                                href="/tf-setup"
+                                title="Two-Factor Auth"
+                            >
+                                <template v-slot:prepend><i class="ti ti-shield-lock mr-4"></i></template>
+                            </v-list-item>
+                            <v-list-item
+                                href="/mf-recovery-codes"
+                                title="Recovery Codes"
+                            >
+                                <template v-slot:prepend><i class="ti ti-lifebuoy mr-4"></i></template>
+                            </v-list-item>
                         {% else %}
                             <!-- User has no workspace access -->
                             <v-list-subheader>Getting Started</v-list-subheader>
@@ -161,6 +205,28 @@
                                 subtitle="Request workspace access"
                             >
                                 <template v-slot:prepend><i class="ti ti-help mr-4"></i></template>
+                            </v-list-item>
+
+                            <!-- Account Section for users without workspace -->
+                            <v-divider class="my-2"></v-divider>
+                            <v-list-subheader>Account</v-list-subheader>
+                            <v-list-item
+                                href="/change"
+                                title="Change Password"
+                            >
+                                <template v-slot:prepend><i class="ti ti-key mr-4"></i></template>
+                            </v-list-item>
+                            <v-list-item
+                                href="/tf-setup"
+                                title="Two-Factor Auth"
+                            >
+                                <template v-slot:prepend><i class="ti ti-shield-lock mr-4"></i></template>
+                            </v-list-item>
+                            <v-list-item
+                                href="/mf-recovery-codes"
+                                title="Recovery Codes"
+                            >
+                                <template v-slot:prepend><i class="ti ti-lifebuoy mr-4"></i></template>
                             </v-list-item>
                         {% endif %}
                     {% endif %}
@@ -269,6 +335,11 @@
 <script src="/static/js/axios.min.js"></script>
 
 <!-- Enferno Components -->
+<script src="/static/js/components/TransitionExpand.js"></script>
+<script src="/static/js/components/VerticalNavLink.js"></script>
+<script src="/static/js/components/VerticalNavGroup.js"></script>
+<script src="/static/js/components/VerticalNavSectionTitle.js"></script>
+<script src="/static/js/components/NotificationDropdown.js"></script>
 <script src="/static/js/components/ThemeSwitcher.js"></script>
 <script src="/static/js/components/index.js"></script>
 

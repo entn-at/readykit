@@ -29,7 +29,9 @@ def uia_username_mapper(identity):
 
 
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "3nF3Rn0")
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+    if not SECRET_KEY:
+        raise ValueError("SECRET_KEY environment variable is required")
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     DEBUG_TB_ENABLED = os.environ.get("DEBUG_TB_ENABLED")
@@ -60,10 +62,9 @@ class Config:
     # Disable email changes - critical for multi-tenant SaaS
     SECURITY_EMAIL_CHANGEABLE = False
     SECURITY_PASSWORD_HASH = "argon2"
-    SECURITY_PASSWORD_SALT = os.environ.get(
-        "SECURITY_PASSWORD_SALT",
-        "e89c4039b51f72b0519d1ee033ff537c7c48902e1f497f74c7a0923c9e4e0996",
-    )
+    SECURITY_PASSWORD_SALT = os.environ.get("SECURITY_PASSWORD_SALT")
+    if not SECURITY_PASSWORD_SALT:
+        raise ValueError("SECURITY_PASSWORD_SALT environment variable is required")
     # Email-only login - simplest and most user-friendly
     SECURITY_USER_IDENTITY_ATTRIBUTES = [
         {"email": {"mapper": uia_username_mapper, "case_insensitive": True}},
@@ -113,6 +114,11 @@ class Config:
     )
     SESSION_COOKIE_SAMESITE = os.environ.get("SESSION_COOKIE_SAMESITE", "Lax")
 
+    # Session management
+    DISABLE_MULTIPLE_SESSIONS = (
+        os.environ.get("DISABLE_MULTIPLE_SESSIONS", "False").lower() == "true"
+    )
+
     # flask mail settings
     MAIL_SERVER = os.environ.get("MAIL_SERVER")
     MAIL_PORT = 465
@@ -131,9 +137,7 @@ class Config:
     GOOGLE_OAUTH_REDIRECT_URI = os.environ.get(
         "GOOGLE_OAUTH_REDIRECT_URI"
     )  # Let the OAuth handler construct it dynamically
-    OAUTHLIB_INSECURE_TRANSPORT = os.environ.get(
-        "OAUTHLIB_INSECURE_TRANSPORT", "1"
-    )  # Remove in production
+    OAUTHLIB_INSECURE_TRANSPORT = os.environ.get("OAUTHLIB_INSECURE_TRANSPORT", "0")
 
     # GitHub OAuth Settings
     GITHUB_AUTH_ENABLED = (
