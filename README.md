@@ -6,6 +6,8 @@ Multi-tenant workspaces, Stripe billing, OAuth, and team collaboration out of th
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+**[Try the Live Demo →](https://try.readykit.dev)**
+
 ---
 
 ## What's Included
