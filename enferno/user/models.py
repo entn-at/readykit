@@ -248,14 +248,14 @@ class Workspace(db.Model, BaseMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     slug = db.Column(db.String(100), unique=True, nullable=False)
-    owner_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
 
     # Billing fields
     plan = db.Column(db.String(10), default="free")  # 'free' or 'pro'
     stripe_customer_id = db.Column(db.String(100), nullable=True)
     upgraded_at = db.Column(db.DateTime, nullable=True)
 
-    owner = relationship("User", backref="owned_workspaces")
+    owner = relationship("User", backref=db.backref("owned_workspaces", cascade="all, delete-orphan", passive_deletes=True))
 
     def to_dict(self):
         return {
@@ -298,8 +298,8 @@ class Membership(db.Model, BaseMixin):
         db.String(20), nullable=False, default="member"
     )  # 'admin' or 'member'
 
-    workspace = relationship("Workspace", backref="memberships")
-    user = relationship("User", backref="memberships")
+    workspace = relationship("Workspace", backref=db.backref("memberships", cascade="all, delete-orphan", passive_deletes=True))
+    user = relationship("User", backref=db.backref("memberships", cascade="all, delete-orphan", passive_deletes=True))
 
     def to_dict(self):
         return {
@@ -317,8 +317,8 @@ class Session(db.Model, BaseMixin):
     __tablename__ = "user_sessions"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    user = db.relationship("User", backref=db.backref("sessions", lazy=True))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    user = db.relationship("User", backref=db.backref("sessions", lazy=True, cascade="all, delete-orphan", passive_deletes=True))
 
     session_token = db.Column(db.String(255), unique=True, nullable=False)
     last_active = db.Column(db.DateTime, default=datetime.now)
