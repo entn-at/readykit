@@ -55,12 +55,16 @@ Visit http://localhost:5000 and sign in with Google.
 
 ## Production Deploy
 
+**Fly.io (CI/CD)** - Push to master, deploys in ~2 minutes.
+
+See [docs/deployment/fly.md](docs/deployment/fly.md) for full setup guide.
+
+**Docker Compose** - Self-hosted:
 ```bash
-uv run python checks.py     # Sanity check before deploy
 docker compose up --build
 ```
 
-Includes PostgreSQL, Redis, Nginx, Celery - ready to ship.
+Includes PostgreSQL, Redis, Nginx, Celery.
 
 ---
 
