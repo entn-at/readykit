@@ -1,4 +1,4 @@
-# Deploy to Fly.io
+# Fly.io Deployment
 
 Automated CI/CD deployment to Fly.io. Push to `master` and your app deploys in ~2 minutes.
 
@@ -120,38 +120,6 @@ flyctl secrets set -a your-app-name \
   CELERY_RESULT_BACKEND="redis://..."
 ```
 
-## Configuration
-
-### fly.toml Options
-
-```toml
-app = 'your-app-name'
-primary_region = 'iad'  # Change to your preferred region
-
-[http_service]
-  internal_port = 5000
-  auto_stop_machines = 'stop'      # Stop when idle (saves money)
-  auto_start_machines = true       # Start on request
-  min_machines_running = 0         # Allow all machines to stop
-
-[[vm]]
-  memory = '512mb'                 # Increase for larger apps
-  cpu_kind = 'shared'
-  cpus = 1
-```
-
-### Regions
-
-Common regions:
-- `iad` - Virginia, USA
-- `lax` - Los Angeles, USA
-- `lhr` - London, UK
-- `fra` - Frankfurt, Germany
-- `sin` - Singapore
-- `syd` - Sydney, Australia
-
-Full list: https://fly.io/docs/reference/regions/
-
 ## Troubleshooting
 
 ### View Logs
@@ -173,4 +141,3 @@ flyctl status -a your-app-name
 ```bash
 flyctl deploy -a your-app-name
 ```
-
