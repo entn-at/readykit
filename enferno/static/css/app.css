@@ -77,3 +77,54 @@ a {
 a:hover {
     opacity: 0.8;
 }
+
+/* ===== Settings Page ===== */
+.status-banner {
+    background: linear-gradient(135deg, rgba(var(--v-theme-primary), 0.08) 0%, rgba(var(--v-theme-primary), 0.02) 100%);
+    border: 1px solid rgba(var(--v-theme-primary), 0.12);
+    border-radius: 12px;
+}
+
+.plan-badge-free {
+    background: rgba(var(--v-theme-warning), 0.16) !important;
+    color: rgb(var(--v-theme-warning)) !important;
+}
+
+.plan-badge-pro {
+    background: rgba(var(--v-theme-success), 0.16) !important;
+    color: rgb(var(--v-theme-success)) !important;
+}
+
+.upgrade-card {
+    background: linear-gradient(135deg, rgb(var(--v-theme-primary)) 0%, rgba(var(--v-theme-primary), 0.85) 100%);
+    border-radius: 12px;
+}
+
+.usage-section {
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.v-theme--dark .usage-section {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-list li {
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.settings-tabs .v-tab {
+    text-transform: none;
+    font-weight: 500;
+    letter-spacing: 0;
+}

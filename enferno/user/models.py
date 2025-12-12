@@ -266,6 +266,7 @@ class Workspace(db.Model, BaseMixin):
             "plan": self.plan,
             "is_pro": self.is_pro,
             "created_at": self.created_at.isoformat() if self.created_at else None,
+            "upgraded_at": self.upgraded_at.isoformat() if self.upgraded_at else None,
         }
 
     @property
