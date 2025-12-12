@@ -82,9 +82,13 @@ def api_user():
     def user_with_workspaces(user):
         """Add workspace info to user dict"""
         workspaces = user.get_workspaces()
+        owned_count = db.session.execute(
+            db.select(db.func.count(Workspace.id)).where(Workspace.owner_id == user.id)
+        ).scalar()
         return {
             **user.to_dict(),
             "workspace_count": len(workspaces),
+            "owned_workspace_count": owned_count,
             "workspaces": [
                 {"id": w.id, "name": w.name, "role": user.get_workspace_role(w.id)}
                 for w in workspaces[:3]  # Show first 3
@@ -179,6 +183,23 @@ def api_user_delete(id):
     user_data = user.to_dict()
 
     try:
+        # Explicitly clean up owned workspaces and their memberships
+        owned_workspaces = db.session.execute(
+            db.select(Workspace).where(Workspace.owner_id == user.id)
+        ).scalars().all()
+
+        for ws in owned_workspaces:
+            # Delete all memberships for this workspace
+            db.session.execute(
+                db.delete(Membership).where(Membership.workspace_id == ws.id)
+            )
+            db.session.delete(ws)
+
+        # Delete user's memberships in other workspaces
+        db.session.execute(
+            db.delete(Membership).where(Membership.user_id == user.id)
+        )
+
         db.session.delete(user)
         db.session.commit()
         Activity.register(current_user.id, "User Delete", user_data)

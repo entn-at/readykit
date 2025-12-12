@@ -189,9 +189,12 @@ def oauth_logged_in(blueprint, token):
                 db.session.add_all([user, oauth])
                 db.session.flush()  # Get user ID before creating workspace
 
-                WorkspaceService.create_workspace(
-                    name="", owner_user=user, auto_name=True
-                )
+                # Only create workspace if user doesn't already have one
+                # (handles edge case of orphaned data from deleted users)
+                if not user.get_workspaces():
+                    WorkspaceService.create_workspace(
+                        name="", owner_user=user, auto_name=True
+                    )
                 login_user(user)
                 flash("Welcome! Your workspace has been created.")
 
