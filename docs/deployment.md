@@ -8,7 +8,8 @@ ReadyKit provides multiple deployment options:
 
 1. **Docker Compose** - Full stack on any server
 2. **Fly.io** - Quick cloud deployment with CI/CD
-3. **Traditional** - Manual setup on Ubuntu/Debian
+3. **Railway** - Simple cloud deployment with CI/CD
+4. **Traditional** - Manual setup on Ubuntu/Debian
 
 ## Docker Compose (Recommended)
 
@@ -80,6 +81,23 @@ flyctl deploy
 ```
 
 Your app will be live at `https://your-app-name.fly.dev`
+
+## Railway Deployment
+
+Simple cloud deployment with automatic CI/CD. See [Railway Guide](/deployment/railway) for detailed setup.
+
+### Quick Start
+
+```bash
+# Create project at railway.app
+# Add PostgreSQL and Redis services
+# Set environment variables in dashboard
+
+# Add GitHub secret: RAILWAY_TOKEN
+# Push to deploy branch - auto-deploys
+```
+
+Your app will be live at the URL shown in Railway dashboard.
 
 ## Traditional Deployment
 
