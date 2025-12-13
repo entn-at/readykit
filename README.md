@@ -6,7 +6,7 @@ Multi-tenant workspaces, Stripe billing, OAuth, and team collaboration out of th
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**[Try the Live Demo →](https://try.readykit.dev)**
+**[Documentation](https://level09.github.io/readykit/)** · **[Live Demo](https://try.readykit.dev)**
 
 ---
 
@@ -88,6 +88,12 @@ def invoices(workspace_id):
 ```
 
 All queries are automatically scoped to the current workspace.
+
+---
+
+## AI-Assisted Development
+
+Using Cursor, Claude Code, or GitHub Copilot? See [docs/agents.md](docs/agents.md) for patterns and conventions.
 
 ---
 
