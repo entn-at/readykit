@@ -60,6 +60,7 @@ dependencies = [
     "python-editor>=1.0.4",
     # Production server
     "uwsgi>=2.0.30; sys_platform != 'win32'",
+    "gunicorn>=23.0.0",
     "sluggi>=0.1.1",
     # Payments and billing
     "stripe>=12.0.0",
