@@ -1,0 +1,6 @@
+# Railway-specific build configuration
+# Railway uses Nixpacks by default, which auto-detects Python
+# This overrides the start command to use gunicorn (which auto-binds to $PORT)
+
+[start]
+cmd = "gunicorn run:app --workers 2 --threads 2"
