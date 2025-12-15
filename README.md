@@ -10,6 +10,14 @@ Multi-tenant workspaces, Stripe billing, OAuth, and team collaboration out of th
 
 ---
 
+
+
+https://github.com/user-attachments/assets/c955e2a2-8f25-4430-98fe-5bbc95ffb4da
+
+
+
+---
+
 ## What's Included
 
 - **Multi-tenant workspaces** - Data isolation, scales from solo to teams
